@@ -1,0 +1,21 @@
+Source: ncore
+Priority: optional
+Maintainer: Nobutaka Ito <noito@debian>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Section: libs
+Homepage: no url
+
+Package: ncore-dev
+Section: libdevel
+Architecture: any
+Depends: ncore (= ${binary:Version})
+Description: noito's core lib for devel.
+ noito's core lib for devel.
+
+Package: ncore
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: noito's core lib.
+ noito's core lib.
