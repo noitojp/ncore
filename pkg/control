@@ -1,6 +1,6 @@
 Source: ncore
 Priority: optional
-Maintainer: Nobutaka Ito <noito@debian>
+Maintainer: Nobutaka Ito <noitojp@gmail.com>
 Build-Depends: debhelper (>= 7.0.50~)
 Standards-Version: 3.8.4
 Section: libs
