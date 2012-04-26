@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include <errno.h>
+#include <poll.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -16,6 +17,39 @@ static int _openmax = OPEN_MAX;
 #else
 static int _openmax = 0;
 #endif
+
+static inline _nax_poll_single_desc_poll(int fd,int msec)
+{
+	struct pollfd fds[1];
+
+	fds[0].fd = fd;
+	fds[0].events = POLLIN;
+	return( poll(fds,1,msec) );
+}
+
+static inline _nax_poll_single_desc_select(int fd,int msec)
+{
+	int max_fd = -1;
+	fd_set readfds;
+	struct timeval tv;
+	int ret;
+
+	FD_ZERO(&readfds);
+	max_fd = MY_FD_SET(&readfds,fd,max_fd);
+	tv.tv_sec = msec / 1000;
+	tv.tv_usec = (msec % 1000) * 1000;
+	ret = select(max_fd+1,&readfds,NULL,NULL,&tv);
+	if( ret <= 0 ){
+		return(ret);
+	}
+
+	if( MY_FD_ISSET(fd,&readfds) ){
+		return(fd);
+	}
+	else{
+		return(-1);
+	}
+}
 
 void nax_msleep(int msec)
 {
@@ -70,25 +104,10 @@ int nax_openmax(void)
 
 int nax_poll_single_desc(int fd,int msec)
 {
-	int max_fd = -1;
-	fd_set readfds;
-	struct timeval tv;
-	int ret;
-
-	FD_ZERO(&readfds);
-	max_fd = MY_FD_SET(&readfds,fd,max_fd);
-	tv.tv_sec = msec / 1000;
-	tv.tv_usec = (msec % 1000) * 1000;
-	ret = select(max_fd+1,&readfds,NULL,NULL,&tv);
-	if( ret <= 0 ){
-		return(ret);
-	}
-
-	if( MY_FD_ISSET(fd,&readfds) ){
-		return(fd);
-	}
-	else{
-		return(-1);
-	}
+#if HAVE_POLL
+	return( _nax_poll_single_desc_poll(fd,msec) );
+#else
+	return( _nax_poll_single_desc_select(fd,msec) );
+#endif
 }
 
