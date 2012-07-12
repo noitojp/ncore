@@ -12,10 +12,10 @@ typedef struct{
 extern "C" {
 #endif
 
-extern nax_chpipe_t* nax_popen2(const char *cmd);
+extern nax_chpipe_t* nax_popen(const char *cmd);
 extern int nax_pwrite(const nax_chpipe_t *p,const char *src,int siz);
 extern int nax_pread(const nax_chpipe_t *p,char *dest,int siz);
-extern void nax_pclose2(nax_chpipe_t *p);
+extern void nax_pclose(nax_chpipe_t *p);
 
 #ifdef __cplusplus
 }
