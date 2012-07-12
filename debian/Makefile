@@ -11,3 +11,4 @@ install:
 	install -m644 uni_util.h ${DESTDIR}/home/z/include/ncore/uni_util.h
 	install -m644 base64.h ${DESTDIR}/home/z/include/ncore/base64.h
 	install -m644 url_codec.h ${DESTDIR}/home/z/include/ncore/url_codec.h
+	install -m644 chpipe.h ${DESTDIR}/home/z/include/ncore/chpipe.h
